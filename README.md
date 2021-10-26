@@ -14,6 +14,6 @@ Project is currently at stage: 1
 The term [Conjugate Method](https://www.westside-barbell.com/blogs/the-blog/conjugate-system) was coined by the Dynamo Club in the Soviet Union. As practiced by Loiue Simmons, the Conjugate Method is a periodization system for powerlifters using maximum effort lifts one day and then a percentage of that lift in the next training session. [This link](https://youtu.be/8LGHtdkSc6o) has a good explanation of the basic setup by AJ Roberts, former Westside Barbell lifter.
 
 # How to use this application
-
+TBD
 
 
