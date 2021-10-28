@@ -1,44 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Conjugate Method Workout Generator</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="" />
+  <link type="stylesheet" href="./style.css">
 </head>
+
 <body>
-  <header><h1>Conjugate Method</h1></header>
+  <header>
+    <h1>Conjugate Method</h1>
+  </header>
   <form>
-  <h2>Week</h2>
-  <label for="weekOne">One</label>
-  <input name="weekOne" type="radio"><br>
-  <label for="weekTwo">Two</label>
-  <input name="weekTwo" type="radio"><br>
-  <label for="weekThree">Three</label>
-  <input name="weekThree" type="radio"><br>
-  <h2>Training Day</h2>
-  <label for="upperMaximumEffort">Upper Body Maximum Effort</label>
-  <input name="upperMaximumEffort" type="radio"><br>
-  <label for="lowerMaximumEffort">Lower Body Maximum Effort</label>
-  <input name="lowerMaximumEffort" type="radio"><br>
-  <label for="upperDynamicEffort">Upper Body Dynamic Effort</label>
-  <input name="upperDynamicEffort" type="radio"><br>
-  <label for="lowerDynamicEffort">Lower Body Dynamic Effort</label>
-  <input name="lowerDynamicEffort" type="radio"><br>
-  <label for="supplementary">Extra Workout</label>
-  <input name="supplementary" type="radio"><br>
-  <h2>Records</h2>
-  <label for="upperMaxRecord">Upper Body Maximum Effort Record</label>
-  <input name="upperMaxRecord"><br>
-  <label for="lowerMaxRecord">Lower Body Maximum Effort Record</label>
-  <input name="lowerMaxRecord"><br>
-  <h2>Lifts Performed</h2>
-  <p>
-      (Insert a search box here)
-  </p>
-  <output>Your workout for today: </output>
-</form>
+    <div id="week">
+      <h2>Week</h2>
+      <label for="weekOne">One</label>
+      <input class="weekRadio" name="weekOne" type="radio"><br>
+      <label for="weekTwo">Two</label>
+      <input class="weekRadio" name="weekTwo" type="radio"><br>
+      <label for="weekThree">Three</label>
+      <input class="weekRadio" name="weekThree" type="radio"><br>
+    </div>
+    <div id="trainingDay">
+      <h2>Training Day</h2>
+      <label for="upperMaximumEffort">Upper Body Maximum Effort</label>
+      <input class="trainingRadio" name="upperMaximumEffort" type="radio"><br>
+      <label for="lowerMaximumEffort">Lower Body Maximum Effort</label>
+      <input class="trainingRadio" name="lowerMaximumEffort" type="radio"><br>
+      <label for="upperDynamicEffort">Upper Body Dynamic Effort</label>
+      <input class="trainingRadio" name="upperDynamicEffort" type="radio"><br>
+      <label for="lowerDynamicEffort">Lower Body Dynamic Effort</label>
+      <input class="trainingRadio" name="lowerDynamicEffort" type="radio"><br>
+      <label for="supplementary">Extra Workout</label>
+      <input class="trainingRadio" name="supplementary" type="radio"><br>
+    </div>
+    <div id="records">
+      <h2>Records</h2>
+      <label for="upperMaxRecord">Upper Body Maximum Effort Record</label>
+      <input name="upperMaxRecord"><br>
+      <label for="lowerMaxRecord">Lower Body Maximum Effort Record</label>
+      <input name="lowerMaxRecord"><br>
+    </div>
+    <div id="lifts">
+      <h2>Lifts Performed</h2>
+      <p>
+        (Insert a search box here)
+      </p>
+    </div>
+    <div id="WOD">
+      <output>Your workout for today: </output>
+    </div>
+  </form>
+  <script type="module" src="./main.js"></script>
 </body>
+
 </html>
 <!--
   Next Steps:
