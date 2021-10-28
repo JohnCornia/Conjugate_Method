@@ -3,9 +3,9 @@ This is a web application that will generate workouts for powerlifters according
 
 The development stages will go as follows:
 
-1. Website is created using JavaScript and PHP
-2. Host is selected and website is hosted
-3. Database created and added to save user records
+1. Website is created using JavaScript only
+2. Database created and added to save user records 
+3. Host is selected and website is hosted
 4. Additional features/styling added
 
 Project is currently at stage: 1
