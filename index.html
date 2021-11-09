@@ -17,29 +17,30 @@
   <form id="workoutForm">
     <h2>Week</h2>
     <select name="week" required>
+      <option value="" selected disabled hidden>Choose week...</option>
       <option value="one">One</option>
       <option value="two">Two</option>
       <option value="three">Three</option>
     </select>
     <h2>Training Day</h2>
     <select name="trainingDay" required>
+      <option value="" selected disabled hidden>Choose day...</option>
       <option value="maxUpper">Max Upper</option>
       <option value="maxLower">Max Lower</option>
       <option value="dynamicUpper">Dynamic Upper</option>
       <option value="dynamicLower">Dynamic Lower</option>
     </select>
+    <h2>Lift Performed Previously</h2>
+    <h2>Lift to be Performed</h2>
+    <label>Enter the name of your maximum effort lift:</label><br>
+    <input type="text" name="lift" placeholder="Lift performed...">
     <h2>Records</h2>
-    <label for="upperMaxRecord">Upper Body Maximum Effort Record</label>
-    <input name="upperMaxRecord"><br>
-    <label for="lowerMaxRecord">Lower Body Maximum Effort Record</label>
-    <input name="lowerMaxRecord"><br>
-    <h2>Exercise Performed Previously</h2>
-    <label>Enter the name of the exercise done earlier in the week:</label><br>
-    <input type="text" name="exercise" placeholder="Exercise performed...">
+    <label for="maxRecord">Maximum Effort Record</label><br>
+    <input type="text" name="maxRecord" placeholder="Enter your record..."><br>
     <button id="submisssion" type="submit">Submit</button>
   </form>
 </div>
-  <div>
+  <div id="tableWrapper">
     <table id="WOD"></table>
   </div>
   <script type="module" src="./main.js"></script>

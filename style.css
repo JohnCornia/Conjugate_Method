@@ -1,15 +1,28 @@
-#formWrapper{
+#formWrapper, #tableWrapper{
     display: block;
     text-align: center;
 }
 
-#workoutForm {
+#workoutForm, table{
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
 }
 
+table, th, td{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    border: 1px solid black;
+  border-collapse: collapse;
+}
+
 h1{
     text-align: center;
+}
+
+body{
+    font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
