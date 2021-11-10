@@ -26,3 +26,12 @@ h1{
 body{
     font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+.training, .previously, .proximately, .record{
+    display: none;
+}
+
+label {
+    font-size: x-large;
+    font-weight: bold;
+}

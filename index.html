@@ -14,32 +14,34 @@
     <h1>Conjugate Method</h1>
   </header>
   <div id="formWrapper">
-  <form id="workoutForm">
-    <h2>Week</h2>
-    <select name="week" required>
-      <option value="" selected disabled hidden>Choose week...</option>
-      <option value="one">One</option>
-      <option value="two">Two</option>
-      <option value="three">Three</option>
-    </select>
-    <h2>Training Day</h2>
-    <select name="trainingDay" required>
-      <option value="" selected disabled hidden>Choose day...</option>
-      <option value="maxUpper">Max Upper</option>
-      <option value="maxLower">Max Lower</option>
-      <option value="dynamicUpper">Dynamic Upper</option>
-      <option value="dynamicLower">Dynamic Lower</option>
-    </select>
-    <h2>Lift Performed Previously</h2>
-    <h2>Lift to be Performed</h2>
-    <label>Enter the name of your maximum effort lift:</label><br>
-    <input type="text" name="lift" placeholder="Lift performed...">
-    <h2>Records</h2>
-    <label for="maxRecord">Maximum Effort Record</label><br>
-    <input type="text" name="maxRecord" placeholder="Enter your record..."><br>
-    <button id="submisssion" type="submit">Submit</button>
-  </form>
-</div>
+    <form id="workoutForm">
+      <label for="week">Week</label><br>
+      <select name="week" id="week" required>
+        <option value="" selected disabled hidden>Choose week...</option>
+        <option value="one">One</option>
+        <option value="two">Two</option>
+        <option value="three">Three</option>
+      </select><br><br>
+
+      <label class="training" for="trainingDay">Training Day</label>
+      <select class="training" name="trainingDay" id="trainingDay" required>
+        <option value="" selected disabled hidden>Choose day...</option>
+        <option value="max">Max Upper</option>
+        <option value="max">Max Lower</option>
+        <option value="dynamic">Dynamic Upper</option>
+        <option value="dynamic">Dynamic Lower</option>
+      </select><br>
+
+      <label class="previously">Lift Performed Previously</label>
+      <label class="proximately">Lift to be Performed</label>
+      <input class="previously proximately" type="text" name="lift" id="lift" placeholder="Lift performed..."><br>
+
+      <label class="record" for="maxRecord">Maximum Effort Record</label>
+      <input class="record" type="text" name="maxRecord" placeholder="Enter your record..."><br>
+
+      <button id="submisssion" type="submit">Submit</button>
+    </form>
+  </div>
   <div id="tableWrapper">
     <table id="WOD"></table>
   </div>
@@ -47,11 +49,3 @@
 </body>
 
 </html>
-<!--
-  Next Steps:
-  1. Hide inputs until all previous inputs are selected
-  2. Style Page
-  3. Create Output
-  4. Add workout database
-  4. Add Records database
--->
