@@ -1,10 +1,13 @@
 function createTable(formData) {
-    //do psuedocode for this
+    let myString = "<tr>";
+    if (formData.get(week) == "one") {
+        
+    }
 }
 
 function generateWOD(formData) {
     let myString = "<tr><th>Exercise</th><th>Sets</th><th>Repetitions</th><tr>";
-    createTable(formData);
+    //mystring += createTable(formData);
     document.getElementById("WOD").innerHTML = myString;
 }
 
@@ -34,26 +37,41 @@ document.getElementById("trainingDay").addEventListener("change", function () {
         proximately[1].style.display = "block"; 
         previously[0].style.display = "none";
     }
-
+    showMaxRecordField();
 })
 
-document.getElementById("lift").addEventListener("blur", function () {
-    let lift = document.getElementById("lift").value;
+//document.getElementById("trainingDay").addEventListener("change", showMaxRecordField());
+document.getElementById("lift").addEventListener("change", console.log(
+    "Lift listener called"
+));
 
-    if (lift != "") {
-        let record = document.getElementsByClassName("record");
+function showMaxRecordField() {
+    
+    let lift = document.getElementById("lift").value;
+    let record = document.getElementsByClassName("record");
+    let training = document.getElementById("trainingDay");
+    let trainingSelected = training.options[training.selectedIndex].value;
+
+    console.log(lift);
+
+    if (lift != "" && trainingSelected != "max") {
+        
         record[0].style.display = "block";
         record[1].style.display = "block";
     }
-})
+    else{
+        record[0].style.display = "none";
+        record[1].style.display = "none";
+    }
+}
 
 document.getElementById("submisssion").addEventListener("click", function () {
     let myForm = document.getElementById('workoutForm');
     let formData = new FormData(myForm);
     //console.log(formData.get(" week"));
-    /*for (var key of formData.keys()) {
+    for (var key of formData.keys()) {
         console.log(formData.get(key));
         console.log(key);
-     }*/
+     }
     generateWOD(formData);
 })
