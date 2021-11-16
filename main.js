@@ -1,77 +1,65 @@
-function createTable(formData) {
-    let myString = "<tr>";
-    if (formData.get(week) == "one") {
-        
-    }
-}
-
-function generateWOD(formData) {
-    let myString = "<tr><th>Exercise</th><th>Sets</th><th>Repetitions</th><tr>";
-    //mystring += createTable(formData);
-    document.getElementById("WOD").innerHTML = myString;
+function calculateResistance(percentResistance, record) {
+    return ((percentResistance + 25) / 100) * record;
 }
 
 document.getElementById("workoutForm").addEventListener("click", function (event) {
     event.preventDefault()
 });
 
-document.getElementById("week").addEventListener("change", function () {
-    let training = document.getElementsByClassName("training");
-    training[0].style.display = "block";
-    training[1].style.display = "block";
-})
+function generateWOD(formData) {
+    /*for (var key of formData.keys()) {
+        console.log(formData.get(key));
+     }*/
+    let myString = "<tr><th>Exercise</th><th>Resistance</th><th>Sets</th><th>Repetitions</th></tr>";
 
-document.getElementById("trainingDay").addEventListener("change", function () {
-    let previously = document.getElementsByClassName("previously");
-    let proximately = document.getElementsByClassName("proximately");
-    let training = document.getElementById("trainingDay");
-    let trainingSelected = training.options[training.selectedIndex].value;
-
-    if (trainingSelected == "dynamic") {
-        previously[0].style.display = "block";
-        previously[1].style.display = "block";
-        proximately[0].style.display = "none";
-    }
-    else{
-        proximately[0].style.display = "block";
-        proximately[1].style.display = "block"; 
-        previously[0].style.display = "none";
-    }
-    showMaxRecordField();
-})
-
-//document.getElementById("trainingDay").addEventListener("change", showMaxRecordField());
-document.getElementById("lift").addEventListener("change", console.log(
-    "Lift listener called"
-));
-
-function showMaxRecordField() {
-    
+    let record = document.getElementById("maxRecord").value;
     let lift = document.getElementById("lift").value;
-    let record = document.getElementsByClassName("record");
-    let training = document.getElementById("trainingDay");
-    let trainingSelected = training.options[training.selectedIndex].value;
+    let resistance;
+    let sets;
+    let repetitions;
 
-    console.log(lift);
+    if (formData.get("trainingDay") == "max") {
+        sets = 1;
+        repetitions = 1;
+        resistance = "\\";
+    }
+    else if (formData.get("trainingDay") == "dynamicLower") {
+        sets = 10;
+        repetitions = 2;
+        if (formData.get("week") == "one") {
+            resistance = calculateResistance(50, record);
+        }
+        else if (formData.get("week") == "two") {
+            resistance = calculateResistance(55, record);
+        }
+        else {
+            resistance = calculateResistance(60, record);
+        }
+    }
+    else if (formData.get("trainingDay") == "dynamicUpper") {
+        sets = 9;
+        repetitions = 3;
+        if (formData.get("week") == "one") {
+            calculateResistance(50, record);
+        }
+        else if (formData.get("week") == "two") {
+            resistance = calculateResistance(55, record);
+        }
+        else {
+            resistance = calculateResistance(60, record);
+        }
+    }
 
-    if (lift != "" && trainingSelected != "max") {
-        
-        record[0].style.display = "block";
-        record[1].style.display = "block";
-    }
-    else{
-        record[0].style.display = "none";
-        record[1].style.display = "none";
-    }
+    myString += "<tr><td>" + lift + "</td><td>" 
+    + resistance + "</td><td>" + sets + "</td><td>" 
+    + repetitions + "</td></tr>";
+
+    document.getElementById("WOD").innerHTML = myString;
 }
 
 document.getElementById("submisssion").addEventListener("click", function () {
     let myForm = document.getElementById('workoutForm');
     let formData = new FormData(myForm);
-    //console.log(formData.get(" week"));
-    for (var key of formData.keys()) {
-        console.log(formData.get(key));
-        console.log(key);
-     }
+
     generateWOD(formData);
 })

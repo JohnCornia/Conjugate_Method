@@ -23,21 +23,21 @@
         <option value="three">Three</option>
       </select><br><br>
 
-      <label class="training" for="trainingDay">Training Day</label>
+      <label class="training" for="trainingDay">Training Day</label><br>
       <select class="training" name="trainingDay" id="trainingDay" required>
         <option value="" selected disabled hidden>Choose day...</option>
         <option value="max">Max Upper</option>
         <option value="max">Max Lower</option>
-        <option value="dynamic">Dynamic Upper</option>
-        <option value="dynamic">Dynamic Lower</option>
-      </select><br>
+        <option value="dynamicUpper">Dynamic Upper</option>
+        <option value="dynamicLower">Dynamic Lower</option>
+      </select><br><br>
 
-      <label class="previously">Lift Performed Previously</label>
-      <label class="proximately">Lift to be Performed</label>
-      <input class="previously proximately" type="text" name="lift" id="lift" placeholder="Lift performed..."><br>
+      <label class="previously">Lift to Be Performed</label><br>
+      <input class="previously" type="text" name="lift" id="lift" placeholder="Lift name here..."
+        required><br><br>
 
-      <label class="record" for="maxRecord">Maximum Effort Record</label>
-      <input class="record" type="text" name="maxRecord" placeholder="Enter your record..."><br>
+      <label class="record" for="maxRecord">Maximum Effort Record</label><br>
+      <input class="record" type="text" name="maxRecord" id="maxRecord" placeholder="Record here..." required><br><br>
 
       <button id="submisssion" type="submit">Submit</button>
     </form>
