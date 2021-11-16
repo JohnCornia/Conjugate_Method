@@ -1,5 +1,5 @@
 function calculateResistance(percentResistance, record) {
-    return ((percentResistance + 25) / 100) * record;
+    return Math.round((((percentResistance + 25) / 100) * record)/5) *5;
 }
 
 document.getElementById("workoutForm").addEventListener("click", function (event) {
@@ -39,8 +39,9 @@ function generateWOD(formData) {
     else if (formData.get("trainingDay") == "dynamicUpper") {
         sets = 9;
         repetitions = 3;
+        console.log(formData.get("week"));
         if (formData.get("week") == "one") {
-            calculateResistance(50, record);
+            resistance = calculateResistance(50, record);
         }
         else if (formData.get("week") == "two") {
             resistance = calculateResistance(55, record);
