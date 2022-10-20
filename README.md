@@ -16,4 +16,3 @@ The term [Conjugate Method](https://www.westside-barbell.com/blogs/the-blog/conj
 # How to use this application
 TBD
 
-
