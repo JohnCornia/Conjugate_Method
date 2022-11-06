@@ -1,7 +1,7 @@
 const Records = () => {
 return (
 	<div>
-	<h1>Contact Us Page</h1>
+	<h1>Records Page</h1>
 	</div>
 );
 };
