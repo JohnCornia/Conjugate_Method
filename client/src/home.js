@@ -2,7 +2,7 @@ import Table from "./components/Table";
 import Button from './components/Button';
 const Home = () => {
     
- var getWorkout = 'http://localhost:9000/home/get-workout';
+ var getWorkout = 'http://localhost:9000/home/';
  //https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=7078616c440748bd49f735d765236ed0
  var workoutData;
 
