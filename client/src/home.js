@@ -1,19 +1,26 @@
+import Table from "./components/Table";
 const Home = () => {
     
- var testAPI = 'http://localhost:9000/testApi';
+ var getWorkout = 'http://localhost:9000/home/get-workout';
  //https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=7078616c440748bd49f735d765236ed0
+ var workoutData;
 
-  fetch(testAPI)
+  fetch(getWorkout)
   .then(testObj => testObj.json())
   .then(html =>  {
     console.log(html);
-    document.getElementById('data').innerHTML = html.value;
+    workoutData = 
+    html[0].main_lift + " " + 
+    html[0].accessory_lifts + " " + 
+    html[1].accessory_lifts + " " + 
+    html[2].accessory_lifts;
+    console.log(workoutData);
   })
 
   return (
     <div>
       <h1>Home Page</h1>
-      <div id="data"></div>
+      <Table/>
     </div>
   );
 };
