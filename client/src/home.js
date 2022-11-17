@@ -1,4 +1,5 @@
 import Table from "./components/Table";
+import Button from './components/Button';
 const Home = () => {
     
  var getWorkout = 'http://localhost:9000/home/get-workout';
@@ -21,6 +22,7 @@ const Home = () => {
     <div>
       <h1>Home Page</h1>
       <Table/>
+      <Button/>
     </div>
   );
 };

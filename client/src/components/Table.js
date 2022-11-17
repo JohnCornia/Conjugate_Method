@@ -12,19 +12,19 @@ function SmallExample(props) {
       </thead>
       <tbody>
         <tr>
-          <td>Main Lift</td>
-          <td>{props.data}</td>
-        </tr>
-        <tr>
-          <td>Accesory Lift One</td>
+          <td></td>
           <td></td>
         </tr>
         <tr>
-          <td>Accesory Lift Two</td>
+          <td></td>
           <td></td>
         </tr>
         <tr>
-          <td>Accesory Lift Three</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
           <td></td>
         </tr>
       </tbody>
