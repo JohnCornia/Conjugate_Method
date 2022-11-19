@@ -7,7 +7,7 @@ function SmallExample(props) {
         <tr>
           <th>Lift</th>
           <th>Name and Variation</th>
-          
+          <th>Sets x Repetitions</th>
         </tr>
       </thead>
       <tbody>

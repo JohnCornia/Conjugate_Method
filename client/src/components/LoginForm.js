@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 function BasicExample() {
+
   return (
     <Form>
       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -14,7 +15,10 @@ function BasicExample() {
         <Form.Control type="password" placeholder="Password" />
       </Form.Group>
       <Button variant="primary" type="submit">
-        Submit
+        Login
+      </Button>
+      <Button variant="primary" onclick="submit">
+        Sign Up
       </Button>
     </Form>
   );

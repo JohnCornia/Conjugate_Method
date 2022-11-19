@@ -1,9 +1,9 @@
 import Table from "./components/Table";
-import Button from './components/Button';
+import Form from "./components/Form";
 const Home = () => {
-    
- var getWorkout = 'http://localhost:9000/home/';
- //https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=7078616c440748bd49f735d765236ed0
+  
+ 
+ /*https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=7078616c440748bd49f735d765236ed0
  var workoutData;
 
   fetch(getWorkout)
@@ -16,13 +16,13 @@ const Home = () => {
     html[1].accessory_lifts + " " + 
     html[2].accessory_lifts;
     console.log(workoutData);
-  })
+  })*/
 
   return (
     <div>
       <h1>Home Page</h1>
       <Table/>
-      <Button/>
+      <Form/>
     </div>
   );
 };
