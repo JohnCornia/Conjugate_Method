@@ -1,19 +1,30 @@
+import Table from "./components/Table";
+import Form from "./components/Form";
+import { useState } from "react";
 const Home = () => {
-    
- var testAPI = 'http://localhost:9000/testApi';
- //https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=7078616c440748bd49f735d765236ed0
-
-  fetch(testAPI)
-  .then(testObj => testObj.json())
-  .then(html =>  {
-    console.log(html);
-    document.getElementById('data').innerHTML = html.value;
-  })
+const [mainLift, setMainLift] = useState("");
+const [accesoryOne, setAccesoryOne] = useState()
+const [accesoryTwo, setAccesoryTwo] = useState()
+const [accesoryThree, setAccesoryThree] = useState();
+var getWorkout = "http://localhost:9000/home/";
+ fetch(getWorkout)
+  .then(workoutObj => workoutObj.json())
+  .then(workoutJSON =>  {
+    console.log(workoutJSON);
+    setMainLift(workoutJSON.mainLift);
+    setAccesoryOne(workoutJSON.accesoryLifts[0]);
+    setAccesoryTwo(workoutJSON.accesoryLifts[1]);
+    setAccesoryThree(workoutJSON.accesoryLifts[2]);
+    });
 
   return (
     <div>
       <h1>Home Page</h1>
-      <div id="data"></div>
+      <Table mainLift={mainLift} 
+        accesoryOne={accesoryOne} 
+        accesoryTwo={accesoryTwo} 
+        accesoryThree={accesoryThree} /> 
+      <Form/>
     </div>
   );
 };

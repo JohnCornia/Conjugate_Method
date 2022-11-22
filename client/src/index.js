@@ -9,6 +9,7 @@ import About from "./about";
 import Home from "./home";
 import NotFound from "./NotFound";
 import Layout from "./layout";
+import Login from "./login";
 
 export default function App() {
     return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path="records" element={<Records />} />
             <Route path="about" element={<About />} />
+            <Route path="login" element={<Login/>}/>
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
