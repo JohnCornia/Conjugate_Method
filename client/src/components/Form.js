@@ -14,7 +14,6 @@ function BasicExample () {
     fetch(completeWorkoutApi, {
       method: "POST",
       mode: 'cors',
-      //body: JSON.stringify(obj),
       body: text,
       headers: {
         "Content-Type" : "application/json"
@@ -27,7 +26,7 @@ function BasicExample () {
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Main Lift Max Effort</Form.Label>
+        <Form.Label>Main Lift Result</Form.Label>
         <Form.Control type="text" placeholder="Enter max" onChange={(e) => setMax(e.target.value)}/>
         <Button variant="primary" type="submit">
         Complete Workout

@@ -92,6 +92,7 @@ router.get("/", function(req, res, next) {
                     console.log(row.accessory_lift);
                     workout.accesoryLifts.push(row.accessory_lift);
                   });
+            console.log(workout);
             res.send(workout);
         });
 });
