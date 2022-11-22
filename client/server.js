@@ -2,7 +2,6 @@ const path = require('path');
 const cors = require('cors');
 const express = require('express');
 const app = express(); // create express app
-app.use(cors());
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());

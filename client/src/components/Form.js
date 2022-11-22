@@ -1,30 +1,34 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useForm } from "react-hook-form";
+import { useState } from 'react';
 
 function BasicExample () {
   var completeWorkoutApi = 'http://localhost:9000/home/complete-workout';
-const {
-  register,
-  handleSubmit,
-  formState: { errors }
-} = useForm();
-  
-const onSubmit = (data) => {
-  console.log(data)
-  fetch(completeWorkoutApi, {
-    method: 'POST',
-    body: data/*,
-    Header: {
-      'Content-Type': 'application/json'
-    }*/
-  });
-};
+  const [max, setMax] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let text = '{ "maxLift" : "' + max + '" }';
+    //const obj = JSON.parse(text);
+    //console.log(text);
+    fetch(completeWorkoutApi, {
+      method: "POST",
+      mode: 'cors',
+      //body: JSON.stringify(obj),
+      body: text,
+      headers: {
+        "Content-Type" : "application/json"
+      } 
+    })
+    .then(testObj => testObj.json())
+    .then(html => console.log(html))
+  }
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Main Lift Max Effort</Form.Label>
-        <Form.Control name="max-lift" placeholder="Enter max" {...register("max-lift")}/>
+        <Form.Control type="text" placeholder="Enter max" onChange={(e) => setMax(e.target.value)}/>
         <Button variant="primary" type="submit">
         Complete Workout
       </Button>

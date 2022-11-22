@@ -17,8 +17,10 @@ con.connect(function(err) {
 // Load the Home page
 router.get("/", function(req, res, next) {
     var query;
+    var query2;
     var macrocycle = 1;
     var day;
+    const workout = new Object();
 
 
 
@@ -47,6 +49,15 @@ router.get("/", function(req, res, next) {
             "ON         meu.max_effort_upper_id = jt1.max_effort_upper_id " +
             "INNER JOIN main_lifts_upper mlu " +
             "ON         jt1.main_lifts_upper_id = mlu.main_lifts_upper_id;";
+        
+        query2 = 
+        "SELECT alu.name AS accessory_lift " +
+        "FROM       max_effort_upper meu " +
+        
+        "INNER JOIN max_effort_upper_has_accesory_lifts_upper jt2 " +
+        "ON         meu.max_effort_upper_id = jt2.max_effort_upper_id " +
+        "INNER JOIN accesory_lifts_upper alu " +
+        "ON         jt2.accesory_lifts_upper_id = alu.accessory_lifts_upper_id;";
     }
 
     if (macrocycle == 2) {
@@ -65,15 +76,30 @@ router.get("/", function(req, res, next) {
         function(err, result, fields) {
             if (err) throw err;
             console.log(result);
-            res.json(result);
-
+            workout.mainLift = result[0].main_lift;
+            console.log(JSON.stringify(workout));
+            //res.send(JSON.stringify(workout));
+        });
+        con.query(
+            query2,
+            function(err, result, fields) {
+                if (err) throw err;
+                console.log(result);
+                var counter = 0;
+                workout.accesoryLifts = new Array();
+                Object.keys(result).forEach(function(key) {
+                    var row = result[key];
+                    console.log(row.accessory_lift);
+                    workout.accesoryLifts.push(row.accessory_lift);
+                  });
+            res.send(workout);
         });
 });
 
 // Mark the current workout as complete
 router.post("/complete-workout", function(req, res, next) {
-    console.log(JSON.stringify(req.body) + '\r\n');
-    res.end(JSON.stringify(req.body) + '\r\n');
+    console.log(req.body);
+    res.send(req.body.maxLift)
     //if day is 1, write new record to records upper
     //if day is 2, write new record to records lower
     //if day is 4, increment macrocycle by 1
