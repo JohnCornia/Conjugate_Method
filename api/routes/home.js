@@ -153,15 +153,49 @@ router.get("/", function(req, res, next) {
 // Mark the current workout as complete
 router.post("/complete-workout", function(req, res, next) {
     console.log(req.body);
-    res.send(req.body.maxLift)
-        //if day is 1, write new record to records upper
+    var macrocycleDayQuery = "";
+
+    //res.send(req.body.maxLift)
+
+    //find the day
+    macrocycleDayQuery =
+        "SELECT     mc.count AS macrocycle, mc.day AS day " +
+        "FROM       macrocycle mc " +
+        "INNER JOIN user u " +
+        "ON         u.macrocycle_id = mc.macrocycle_id " +
+        "WHERE      u.user_id='1';";
+
+    con.query(
+        macrocycleDayQuery,
+        function(err, result, fields) {
+            if (err) throw err;
+            
+            console.log(result);
+
+            //if day is 1, write new record to records upper
+            if(result[0].day == 1){
+                var insertRecordsUpperQuery = 
+                    "INSERT INTO records_upper(weight_lifted)" + 
+                    "VALUES      (" + req.body.maxLift + ");";
+                con.query(
+                    insertRecordsUpperQuery,
+                    function(err, result, fields) {
+                        if (err) throw err;
+                    console.log(result.insertId);
+                    var recordsUpperId = result.insertId;
+
+                    //get the main lift id and write to the records_upper_has_main_lifts_upper
+            });
+            }
+    
+        });
         //if day is 2, write new record to records lower
         //if day is 4, increment macrocycle by 1
-        //set day to to 1
+            //set day to to 1
         //if macrocycle is at 3, delete all workouts
-        //set macrocycle to 1
-        //create all new workouts
-        //else, increment day by one
+            //set macrocycle to 1
+            //create all new workouts
+            //else, increment day by one
 });
 
 module.exports = router;
