@@ -81,22 +81,24 @@ router.get("/", function(req, res, next) {
             }
             if (workout.day == 3) {
                 mainLiftQuery =
-                    "SELECT     mlu.name AS main_lift " +
-                    "FROM       max_effort_upper meu " +
-        
-                    "INNER JOIN max_effort_upper_has_main_lifts_upper jt1  " +
-                    "ON         meu.max_effort_upper_id = jt1.max_effort_upper_id " +
-                    "INNER JOIN main_lifts_upper mlu " +
-                    "ON         jt1.main_lifts_upper_id = mlu.main_lifts_upper_id;";
+                    "SELECT     mlu.name AS main_lift, ru.weight_lifted " +
+                    "FROM       main_lifts_upper mlu " +
+                    
+                    "INNER JOIN records_upper_has_main_lifts_upper ruh " +
+                    "ON         mlu.main_lifts_upper_id = ruh.main_lifts_upper_id " +
+                    "INNER JOIN records_upper ru " +
+                    "ON         ru.records_upper_id = ruh.records_upper_id " +
+                    "INNER JOIN dynamic_effort_upper deu " +
+                    "ON         deu.records_upper_id = ru.records_upper_id;"; 
         
                 accessoryLiftsQuery =
                     "SELECT alu.name AS accessory_lift " +
-                    "FROM       max_effort_upper meu " +
-        
-                    "INNER JOIN max_effort_upper_has_accesory_lifts_upper jt2 " +
-                    "ON         meu.max_effort_upper_id = jt2.max_effort_upper_id " +
-                    "INNER JOIN accesory_lifts_upper alu " +
-                    "ON         jt2.accesory_lifts_upper_id = alu.accessory_lifts_upper_id;";
+                    "FROM   accesory_lifts_upper alu " +
+                    
+                    "INNER JOIN dynamic_effort_upper_has_accesory_lifts_upper deh " +
+                    "ON         deh.accesory_lifts_upper_id = alu.accessory_lifts_upper_id " +
+                    "INNER JOIN dynamic_effort_upper deu " +
+                    "ON         deu.dynamic_effort_upper_id = deh.dynamic_effort_upper_id;";
             }
             if (workout.day == 4) {
                 mainLiftQuery =
@@ -124,6 +126,37 @@ router.get("/", function(req, res, next) {
                     if (err) throw err;
                     console.log(result);
                     workout.mainLift = result[0].main_lift;
+                    var sets = 0;
+                    var reps = 0;
+                    if (workout.day == 1 || workout.day == 2) {
+                        sets = "";
+                        reps = "1 Rep Max";
+                    }
+                    if (workout.day == 3 || workout.day == 4) {
+                        var percentage = 0;
+
+                        if(workout.day == 3){
+                            sets = 9;
+                            reps = 3;
+                        }
+                        if(workout.day == 4){
+                            sets = 10;
+                            reps = 2;
+                        }
+
+                        if (workout.macrocycle == 1) {
+                            percentage = 0.75;
+                        }
+                        if (workout.macrocycle == 2) {
+                            percentage = 0.80;
+                        }
+                        if (workout.macrocycle == 3) {
+                            percentage = 0.85;
+                        }
+                        workout.weight = Math.round((result[0].weight_lifted * percentage) / 5 ) * 5;
+                    }
+                    workout.mainSets = sets;
+                    workout.mainReps = reps;
                 });
             con.query(
                 accessoryLiftsQuery,
@@ -135,6 +168,18 @@ router.get("/", function(req, res, next) {
                     Object.keys(result).forEach(function(key) {
                         var row = result[key];
                         workout.accesoryLifts.push(row.accessory_lift);
+                        var sets = "";
+                        var reps = "";
+                        if (workout.day == 1 || workout.day == 2)  {
+                            sets = "4-5";
+                            reps = "10-12";
+                        }
+                        else {
+                            sets = "3-4";
+                            reps = "8-10";
+                        }
+                        workout.accessorySets = sets;
+                        workout.accessoryReps = reps;
                     });
                     console.log(workout);
                     res.send(workout);
