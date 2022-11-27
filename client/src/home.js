@@ -1,13 +1,31 @@
 import Table from "./components/Table";
 import Form from "./components/Form";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Context } from "./context.js";
+
 const Home = () => {
 const [mainLift, setMainLift] = useState("");
-const [accesoryOne, setAccesoryOne] = useState()
-const [accesoryTwo, setAccesoryTwo] = useState()
-const [accesoryThree, setAccesoryThree] = useState();
-var getWorkout = "http://localhost:9000/home/";
- fetch(getWorkout)
+const [accessoryOne, setAccesoryOne] = useState()
+const [accessoryTwo, setAccesoryTwo] = useState()
+const [accessoryThree, setAccesoryThree] = useState();
+//const [mainLift, setMainLift] = useState('');
+const [accessoryLifts, setAccessoryLifts] = useState([]);
+
+/*useEffect(() => {
+  const getWorkout = "http://localhost:9000/home/";
+  fetch(getWorkout)
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+    setMainLift(data.mainLift);
+    setAccessoryLifts(data.accesoryLifts);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+}, [mainLift]);*/
+const getWorkout = "http://localhost:9000/home/";
+fetch(getWorkout)
   .then(workoutObj => workoutObj.json())
   .then(workoutJSON =>  {
     console.log(workoutJSON);
@@ -20,11 +38,13 @@ var getWorkout = "http://localhost:9000/home/";
   return (
     <div>
       <h1>Home Page</h1>
-      <Table mainLift={mainLift} 
-        accesoryOne={accesoryOne} 
-        accesoryTwo={accesoryTwo} 
-        accesoryThree={accesoryThree} /> 
+      
+      <Table mainLift = {mainLift}
+      accessoryOne = {accessoryOne}
+      accessoryTwo = {accessoryTwo}
+      accessoryThree = {accessoryThree}/> 
       <Form/>
+      
     </div>
   );
 };

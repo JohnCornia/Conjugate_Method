@@ -1,7 +1,14 @@
 import Table from 'react-bootstrap/Table';
+import React, { useContext } from "react";
+import { Context } from "../context";
 
 function SmallExample(props) {
-  console.log(props);
+  /*const { value, setValue } = React.useContext(Context);
+  const [mainLift, setMainLift] = value.value;
+  const [accessoryLift, setAccessory_lift] = value.value2;
+  console.log({value});
+  //console.log({accessoryLift});*/
+  
   return (
     <Table striped bordered hover size="sm">
       <thead>
@@ -19,17 +26,17 @@ function SmallExample(props) {
         </tr>
         <tr>
           <td>Accesory Lift</td>
-          <td>{props.accesoryOne}</td>
+          <td>{props.accessoryOne}</td>
           <td></td>
         </tr>
         <tr>
           <td>Accesory Lift</td>
-          <td>{props.accesoryTwo}</td>
+          <td>{props.accessoryTwo}</td>
           <td></td>
         </tr>
         <tr>
         <td>Accesory Lift</td>
-          <td>{props.accesoryThree}</td>
+          <td>{props.accessoryThree}</td>
           <td></td>
         </tr>
       </tbody>
