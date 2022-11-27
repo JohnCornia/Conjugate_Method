@@ -22,7 +22,7 @@ function SmallExample(props) {
         <tr>
           <td>Main Lift</td>
           <td>{props.mainLift}</td>
-          <td>{props.mainReps} X {props.mainSets}</td>
+          <td> {props.weight} {props.mainReps} X {props.mainSets}</td>
         </tr>
         <tr>
           <td>Accesory Lift</td>

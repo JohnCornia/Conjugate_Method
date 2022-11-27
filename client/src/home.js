@@ -12,6 +12,7 @@ const [accessoryReps, setAccessoryReps] = useState();
 const [accessorySets, setAccessorySets] = useState();
 const [mainReps, setMainLifts] = useState();
 const [mainSets, setMainSets] = useState();
+const [weight, setWeight] = useState();
 //const [mainLift, setMainLift] = useState('');
 //const [accessoryLifts, setAccessoryLifts] = useState([]);
 
@@ -41,7 +42,7 @@ fetch(getWorkout)
     setAccessorySets(workoutJSON.accessorySets);
     setMainLifts(workoutJSON.mainSets);
     setMainSets(workoutJSON.mainReps);
-    
+    setWeight(workoutJSON.weight);
     });
 
   return (
@@ -55,7 +56,8 @@ fetch(getWorkout)
       accessorySets = {accessorySets}
       accessoryReps = {accessoryReps}
       mainSets = {mainSets}
-      mainReps = {mainReps}/> 
+      mainReps = {mainReps}
+      weight = {weight}/> 
       <Form/>
       
     </div>
