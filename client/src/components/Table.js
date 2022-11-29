@@ -1,10 +1,11 @@
 import Table from 'react-bootstrap/Table';
-import React, { useContext } from "react";
-import { Context } from "../context";
+import { useContext } from "react";
+import { WorkoutContext } from '../context';
 
 function SmallExample(props) {
-  /*const { value, setValue } = React.useContext(Context);
-  const [mainLift, setMainLift] = value.value;
+  const workout = useContext(WorkoutContext);
+  console.log(workout);
+  /*const [mainLift, setMainLift] = value.value;
   const [accessoryLift, setAccessory_lift] = value.value2;
   console.log({value});
   //console.log({accessoryLift});*/
@@ -21,23 +22,23 @@ function SmallExample(props) {
       <tbody>
         <tr>
           <td>Main Lift</td>
-          <td>{props.mainLift}</td>
-          <td> {props.weight} {props.mainReps} X {props.mainSets}</td>
+          <td>{workout[0].mainLift}</td>
+          <td>{workout[0].weight} {workout[0].mainSets} X {workout[0].mainReps}</td>
         </tr>
         <tr>
           <td>Accesory Lift</td>
-          <td>{props.accessoryOne}</td>
-          <td>{props.accessoryReps} X {props.accessorySets}</td>
+          <td>{workout[0].accesoryLifts[0]}</td>
+          <td>{workout[0].accessorySets} X {workout[0].accessoryReps}</td>
         </tr>
         <tr>
           <td>Accesory Lift</td>
-          <td>{props.accessoryTwo}</td>
-          <td>{props.accessoryReps} X {props.accessorySets}</td>
+          <td>{workout[0].accesoryLifts[1]}</td>
+          <td>{workout[0].accessorySets} X {workout[0].accessoryReps}</td>
         </tr>
         <tr>
         <td>Accesory Lift</td>
-          <td>{props.accessoryThree}</td>
-          <td>{props.accessoryReps} X {props.accessorySets}</td>
+          <td>{workout[0].accesoryLifts[2]}</td>
+          <td>{workout[0].accessorySets} X {workout[0].accessoryReps}</td>
         </tr>
       </tbody>
     </Table>
