@@ -1,13 +1,12 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import React, { useEffect, useState } from 'react';
-import { Context } from "../context";
+import React, { useState, useContext } from 'react';
+import { WorkoutContext } from '../context';
 
 function BasicExample (props) {
+  const workout = useContext(WorkoutContext);
   var completeWorkoutApi = 'http://localhost:9000/home/complete-workout';
   const [max, setMax] = useState("");
-  /*const [context, setContext] = React.useContext(Context);
-  console.log({context});*/
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -24,28 +23,31 @@ function BasicExample (props) {
     })
     .then(testObj => testObj.json())
     .then(html => console.log(html));
+    fetchNewWorkout();
   }
 
-  /*function fetchNewWorkout() {
+  function fetchNewWorkout() {
     const getWorkout = "http://localhost:9000/home/";
   fetch(getWorkout)
   .then((res) => res.json())
-  .then((data) => {
-    console.log(data);
-    //setContext(data.mainLift);
+  .then((workoutJSON) => {
+    console.log(workoutJSON);
+    workout[1](workoutJSON);
   })
   .catch((err) => {
     console.log(err);
   });
-  }*/
+  }
   
 
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Main Lift Result</Form.Label>
-        <Form.Control type="text" placeholder="Enter max" onChange={(e) => setMax(e.target.value)}/>
-        <Button variant="primary" type="submit" /*onClick={() => fetchNewWorkout()}*/>
+      {(workout[0].day == 3 || workout[0].day == 4) ? "" :  
+      <><Form.Label>Main Lift Result</Form.Label>
+        <Form.Control type="text" placeholder="Enter max" onChange={(e) => setMax(e.target.value)}/></>
+        }
+        <Button variant="primary" type="submit" >
         Complete Workout
       </Button>
       </Form.Group>
