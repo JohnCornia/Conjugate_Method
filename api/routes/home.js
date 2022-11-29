@@ -102,22 +102,34 @@ router.get("/", function(req, res, next) {
             }
             if (workout.day == 4) {
                 mainLiftQuery =
-                    "SELECT     mlu.name AS main_lift " +
-                    "FROM       max_effort_upper meu " +
-        
-                    "INNER JOIN max_effort_upper_has_main_lifts_upper jt1  " +
-                    "ON         meu.max_effort_upper_id = jt1.max_effort_upper_id " +
-                    "INNER JOIN main_lifts_upper mlu " +
-                    "ON         jt1.main_lifts_upper_id = mlu.main_lifts_upper_id;";
+                    "SELECT     mll.name AS main_lift, rl.weight_lifted " +
+                    "FROM       main_lifts_lower mll " +
+                    
+                    "INNER JOIN records_lower_has_main_lifts_lower rlh " +
+                    "ON         mll.main_lifts_lower_id = rlh.main_lifts_lower_id " +
+                    "INNER JOIN records_lower rl " +
+                    "ON         rl.records_lower_id = rlh.records_lower_id " +
+                    "INNER JOIN dynamic_effort_lower del " +
+                    "ON         del.records_lower_id = rl.records_lower_id " +
+                    "INNER JOIN macrocycle mc " +
+                    "ON         del.dynamic_effort_lower_id = mc.dynamic_effort_lower_id " +
+                    "INNER JOIN user u " +
+                    "ON         u.macrocycle_id = mc.macrocycle_id " +
+                    "WHERE      u.user_id=1;";
         
                 accessoryLiftsQuery =
-                    "SELECT alu.name AS accessory_lift " +
-                    "FROM       max_effort_upper meu " +
-        
-                    "INNER JOIN max_effort_upper_has_accesory_lifts_upper jt2 " +
-                    "ON         meu.max_effort_upper_id = jt2.max_effort_upper_id " +
-                    "INNER JOIN accesory_lifts_upper alu " +
-                    "ON         jt2.accesory_lifts_upper_id = alu.accessory_lifts_upper_id;";
+                    "SELECT alr.name AS accessory_lift " +
+                    "FROM   accesory_lifts_lower alr " +
+                    
+                    "INNER JOIN dynamic_effort_lower_has_accesory_lifts_lower deh " +
+                    "ON         deh.accesory_lifts_lower_id = alr.accessory_lifts_lower_id " +
+                    "INNER JOIN dynamic_effort_lower del " +
+                    "ON         del.dynamic_effort_lower_id = deh.dynamic_effort_lower_id " +
+                    "INNER JOIN macrocycle mc " +
+                    "ON         del.dynamic_effort_lower_id = mc.dynamic_effort_lower_id " +
+                    "INNER JOIN user u " +
+                    "ON         u.macrocycle_id = mc.macrocycle_id " +
+                    "WHERE      u.user_id=1;";
             }
             //return the workout based on day and macrocycle
             con.query(
@@ -466,12 +478,133 @@ router.post("/complete-workout", function(req, res, next) {
                         if (err) throw err;
                     }); 
             }
-            //if day is 4, increment macrocycle by 1
+            //if day is 4
             if (result[0].day == 4) {
+                //update all workouts
+            var updateMaxEffortUpperMain = 
+            "UPDATE max_effort_upper_has_main_lifts_upper " +
+            "SET    main_lifts_upper_id=FLOOR(RAND()*(8-1+1))+1  " +
+            "WHERE  max_effort_upper_id=(" +
+                "SELECT     max_effort_upper_id " +
+                "FROM       macrocycle m " +
+                "INNER JOIN user u " +
+                "ON         u.macrocycle_id = m.macrocycle_id " +
+                "WHERE      u.user_id='1'" +
+            ");";
+
+            var updateMaxEffortUpperAccessory = 
+            "UPDATE max_effort_upper_has_accesory_lifts_upper " +
+            "SET    accesory_lifts_upper_id=FLOOR(RAND()*(12-1+1))+1 " +
+            "WHERE  max_effort_upper_id=( " +
+                "SELECT     max_effort_upper_id " +
+                "FROM       macrocycle m " +
+                "INNER JOIN user u " +
+                "ON         u.macrocycle_id = m.macrocycle_id " +
+                "WHERE      u.user_id='1' " +
+            ");";
+            
+            var updateMaxEffortLowerMain=
+            "UPDATE max_effort_lower_has_main_lifts_lower " +
+            "SET    main_lifts_lower_id=FLOOR(RAND()*(8-1+1))+1 " +
+            "WHERE  max_effort_lower_id=( " +
+                "SELECT     max_effort_lower_id " +
+                "FROM       macrocycle m " +
+                "INNER JOIN user u " +
+                "ON         u.macrocycle_id = m.macrocycle_id " +
+                "WHERE      u.user_id='1' " +
+            ");"; 
+
+            var updateMaxEffortLowerAccessory=
+            "UPDATE max_effort_lower_has_accesory_lifts_lower " +
+            "SET    accesory_lifts_lower_id=FLOOR(RAND()*(12-1+1))+1    " +
+            "WHERE  max_effort_lower_id=( " +
+                "SELECT     max_effort_lower_id " +
+                "FROM       macrocycle m " +
+                "INNER JOIN user u " +
+                "ON         u.macrocycle_id = m.macrocycle_id " +
+                "WHERE      u.user_id='1' " +
+            ");";
+            
+            var updateDynamicEffortUpperAcessory=
+            "UPDATE dynamic_effort_upper_has_accesory_lifts_upper " +
+            "SET    accesory_lifts_upper_id=FLOOR(RAND()*(12-1+1))+1    " +
+            "WHERE  dynamic_effort_upper_id=( " +
+                "SELECT     dynamic_effort_upper_id " +
+                "FROM       macrocycle m " +
+                "INNER JOIN user u " +
+                "ON         u.macrocycle_id = m.macrocycle_id " +
+                "WHERE      u.user_id='1' " +
+            ");";
+            
+            var updateDynamicEffortLowerAccessory=
+            "UPDATE dynamic_effort_lower_has_accesory_lifts_lower " +
+            "SET    accesory_lifts_lower_id=FLOOR(RAND()*(12-1+1))+1    " +
+            "WHERE  dynamic_effort_lower_id=( " +
+                "SELECT     dynamic_effort_lower_id " +
+                "FROM       macrocycle m " +
+                "INNER JOIN user u " +
+                "ON         u.macrocycle_id = m.macrocycle_id " +
+                "WHERE      u.user_id='1' " +
+            ");";
+
+            con.query(
+                updateMaxEffortUpperMain,
+                function(err, result, fields) {
+                    if (err) throw err;
+                });
+            con.query(
+                updateMaxEffortUpperAccessory,
+                function(err, result, fields) {
+                    if (err) throw err;
+                });
+            con.query(
+                updateMaxEffortLowerMain,
+                function(err, result, fields) {
+                    if (err) throw err;
+                });
+            con.query(
+                updateMaxEffortLowerAccessory,
+                function(err, result, fields) {
+                    if (err) throw err;
+                });
+            con.query(
+                updateDynamicEffortUpperAcessory,
+                function(err, result, fields) {
+                    if (err) throw err;
+                });
+            con.query(
+                updateDynamicEffortLowerAccessory,
+                function(err, result, fields) {
+                    if (err) throw err;
+                });
              //set day to to 1
-                //delete all workouts
-                //if macrocycle is at 3, set macrocycle to 1
-                //create all new workouts   
+             var updateDay = 
+             "UPDATE macrocycle mc " +
+             "SET    day=1 " +
+             "WHERE  mc.macrocycle_id=1;"; 
+             con.query(
+                 updateDay,
+                 function(err, result, fields) {
+                     if (err) throw err;
+                 }); 
+            //if macrocycle is at 3, set macrocycle to 1
+            var macrocycle = 0;
+            if (result[0].macrocycle == 3) {
+                macrocycle = 1;
+            }
+            //else, increment macrocycle by 1
+            else {
+                macrocycle = result[0].macrocycle + 1;
+            }
+            var updateMacrocycle = 
+            "UPDATE macrocycle mc " +
+            "SET    macrocycle=" + macrocycle + " " +
+            "WHERE  mc.macrocycle_id=1;";
+            con.query(
+                updateMacrocycle,
+                function(err, result, fields) {
+                    if (err) throw err;
+                });                
             }
         });
 });

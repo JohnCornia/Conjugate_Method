@@ -8,12 +8,12 @@ function BasicExample (props) {
   var completeWorkoutApi = 'http://localhost:9000/home/complete-workout';
   const [max, setMax] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     let text = '{ "maxLift" : "' + max + '" }';
     //const obj = JSON.parse(text);
     //console.log(text);
-    fetch(completeWorkoutApi, {
+    await fetch(completeWorkoutApi, {
       method: "POST",
       mode: 'cors',
       body: text,
@@ -43,7 +43,7 @@ function BasicExample (props) {
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-      {(workout[0].day == 3 || workout[0].day == 4) ? "" :  
+      {(workout[0].day === 3 || workout[0].day === 4) ? "" :  
       <><Form.Label>Main Lift Result</Form.Label>
         <Form.Control type="text" placeholder="Enter max" onChange={(e) => setMax(e.target.value)}/></>
         }
