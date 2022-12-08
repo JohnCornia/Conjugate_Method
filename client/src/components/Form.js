@@ -13,7 +13,20 @@ function BasicExample (props) {
     let text = '{ "maxLift" : "' + max + '" }';
     //const obj = JSON.parse(text);
     //console.log(text);
-    await fetch(completeWorkoutApi, {
+    function fetchNewWorkout() {
+      const getWorkout = "http://localhost:9000/home/";
+    fetch(getWorkout)
+    .then((res) => res.json())
+    .then((workoutJSON) => {
+      console.log(workoutJSON);
+      workout[1](workoutJSON);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    }
+    
+    fetch(completeWorkoutApi, {
       method: "POST",
       mode: 'cors',
       body: text,
@@ -25,20 +38,6 @@ function BasicExample (props) {
     .then(html => console.log(html));
     fetchNewWorkout();
   }
-
-  function fetchNewWorkout() {
-    const getWorkout = "http://localhost:9000/home/";
-  fetch(getWorkout)
-  .then((res) => res.json())
-  .then((workoutJSON) => {
-    console.log(workoutJSON);
-    workout[1](workoutJSON);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-  }
-  
 
   return (
     <Form onSubmit={handleSubmit}>
