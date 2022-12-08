@@ -10,6 +10,7 @@ var upload = multer();
 
 var loginRouter = require("./routes/login");
 var homeRouter = require("./routes/home");
+var recordsRouter = require("./routes/record");
 
 var app = express();
 
@@ -23,11 +24,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
-//app.use(bodyParser.json());
-//app.use(upload.none());
+    //app.use(bodyParser.json());
+    //app.use(upload.none());
 
 app.use("/login", loginRouter);
 app.use("/home", homeRouter);
+app.use("/records", recordsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

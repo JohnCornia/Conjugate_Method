@@ -16,11 +16,11 @@ con.connect(function(err) {
 
 // Load the Home page
 router.get("/", function(req, res, next) {
-    
+
     var mainLiftQuery;
     var accessoryLiftsQuery;
     const workout = new Object();
-    
+
     //query to discover the user's day and macrocycle
     var macrocycleDayQuery =
         "SELECT     mc.macrocycle AS macrocycle, mc.day AS day " +
@@ -28,14 +28,14 @@ router.get("/", function(req, res, next) {
         "INNER JOIN user u " +
         "ON         u.macrocycle_id = mc.macrocycle_id " +
         "WHERE      u.user_id='1';";
-    
+
     con.query(
         macrocycleDayQuery,
         function(err, result, fields) {
             if (err) throw err;
-            
+
             console.log(result);
-            
+
             workout.day = result[0].day;
             workout.macrocycle = result[0].macrocycle;
 
@@ -44,36 +44,36 @@ router.get("/", function(req, res, next) {
                 mainLiftQuery =
                     "SELECT     mlu.name AS main_lift " +
                     "FROM       max_effort_upper meu " +
-        
+
                     "INNER JOIN max_effort_upper_has_main_lifts_upper jt1  " +
                     "ON         meu.max_effort_upper_id = jt1.max_effort_upper_id " +
                     "INNER JOIN main_lifts_upper mlu " +
                     "ON         jt1.main_lifts_upper_id = mlu.main_lifts_upper_id;";
-        
+
                 accessoryLiftsQuery =
                     "SELECT alu.name AS accessory_lift " +
                     "FROM       max_effort_upper meu " +
-        
+
                     "INNER JOIN max_effort_upper_has_accesory_lifts_upper jt2 " +
                     "ON         meu.max_effort_upper_id = jt2.max_effort_upper_id " +
                     "INNER JOIN accesory_lifts_upper alu " +
                     "ON         jt2.accesory_lifts_upper_id = alu.accessory_lifts_upper_id;";
             }
-        
+
             if (workout.day == 2) {
                 mainLiftQuery =
                     "SELECT     mll.name AS main_lift " +
                     "FROM       max_effort_lower mel " +
-                    
+
                     "INNER JOIN max_effort_lower_has_main_lifts_lower jt1 " +
                     "ON         mel.max_effort_lower_id = jt1.max_effort_lower_id " +
                     "INNER JOIN main_lifts_lower mll " +
                     "ON         jt1.main_lifts_lower_id = mll.main_lifts_lower_id;";
-        
+
                 accessoryLiftsQuery =
                     "SELECT alw.name AS accessory_lift " +
                     "FROM       max_effort_lower mel " +
-                    
+
                     "INNER JOIN max_effort_lower_has_accesory_lifts_lower jt1 " +
                     "ON         mel.max_effort_lower_id = jt1.max_effort_lower_id " +
                     "INNER JOIN accesory_lifts_lower alw " +
@@ -83,18 +83,18 @@ router.get("/", function(req, res, next) {
                 mainLiftQuery =
                     "SELECT     mlu.name AS main_lift, ru.weight_lifted " +
                     "FROM       main_lifts_upper mlu " +
-                    
+
                     "INNER JOIN records_upper_has_main_lifts_upper ruh " +
                     "ON         mlu.main_lifts_upper_id = ruh.main_lifts_upper_id " +
                     "INNER JOIN records_upper ru " +
                     "ON         ru.records_upper_id = ruh.records_upper_id " +
                     "INNER JOIN dynamic_effort_upper deu " +
-                    "ON         deu.records_upper_id = ru.records_upper_id;"; 
-        
+                    "ON         deu.records_upper_id = ru.records_upper_id;";
+
                 accessoryLiftsQuery =
                     "SELECT alu.name AS accessory_lift " +
                     "FROM   accesory_lifts_upper alu " +
-                    
+
                     "INNER JOIN dynamic_effort_upper_has_accesory_lifts_upper deh " +
                     "ON         deh.accesory_lifts_upper_id = alu.accessory_lifts_upper_id " +
                     "INNER JOIN dynamic_effort_upper deu " +
@@ -102,22 +102,34 @@ router.get("/", function(req, res, next) {
             }
             if (workout.day == 4) {
                 mainLiftQuery =
-                    "SELECT     mlu.name AS main_lift " +
-                    "FROM       max_effort_upper meu " +
-        
-                    "INNER JOIN max_effort_upper_has_main_lifts_upper jt1  " +
-                    "ON         meu.max_effort_upper_id = jt1.max_effort_upper_id " +
-                    "INNER JOIN main_lifts_upper mlu " +
-                    "ON         jt1.main_lifts_upper_id = mlu.main_lifts_upper_id;";
-        
+                    "SELECT     mll.name AS main_lift, rl.weight_lifted " +
+                    "FROM       main_lifts_lower mll " +
+
+                    "INNER JOIN records_lower_has_main_lifts_lower rlh " +
+                    "ON         mll.main_lifts_lower_id = rlh.main_lifts_lower_id " +
+                    "INNER JOIN records_lower rl " +
+                    "ON         rl.records_lower_id = rlh.records_lower_id " +
+                    "INNER JOIN dynamic_effort_lower del " +
+                    "ON         del.records_lower_id = rl.records_lower_id " +
+                    "INNER JOIN macrocycle mc " +
+                    "ON         del.dynamic_effort_lower_id = mc.dynamic_effort_lower_id " +
+                    "INNER JOIN user u " +
+                    "ON         u.macrocycle_id = mc.macrocycle_id " +
+                    "WHERE      u.user_id=1;";
+
                 accessoryLiftsQuery =
-                    "SELECT alu.name AS accessory_lift " +
-                    "FROM       max_effort_upper meu " +
-        
-                    "INNER JOIN max_effort_upper_has_accesory_lifts_upper jt2 " +
-                    "ON         meu.max_effort_upper_id = jt2.max_effort_upper_id " +
-                    "INNER JOIN accesory_lifts_upper alu " +
-                    "ON         jt2.accesory_lifts_upper_id = alu.accessory_lifts_upper_id;";
+                    "SELECT alr.name AS accessory_lift " +
+                    "FROM   accesory_lifts_lower alr " +
+
+                    "INNER JOIN dynamic_effort_lower_has_accesory_lifts_lower deh " +
+                    "ON         deh.accesory_lifts_lower_id = alr.accessory_lifts_lower_id " +
+                    "INNER JOIN dynamic_effort_lower del " +
+                    "ON         del.dynamic_effort_lower_id = deh.dynamic_effort_lower_id " +
+                    "INNER JOIN macrocycle mc " +
+                    "ON         del.dynamic_effort_lower_id = mc.dynamic_effort_lower_id " +
+                    "INNER JOIN user u " +
+                    "ON         u.macrocycle_id = mc.macrocycle_id " +
+                    "WHERE      u.user_id=1;";
             }
             //return the workout based on day and macrocycle
             con.query(
@@ -129,17 +141,17 @@ router.get("/", function(req, res, next) {
                     var sets = 0;
                     var reps = 0;
                     if (workout.day == 1 || workout.day == 2) {
-                        sets = "";
+                        sets = "1";
                         reps = "1 Rep Max";
                     }
                     if (workout.day == 3 || workout.day == 4) {
                         var percentage = 0;
 
-                        if(workout.day == 3){
+                        if (workout.day == 3) {
                             sets = 9;
                             reps = 3;
                         }
-                        if(workout.day == 4){
+                        if (workout.day == 4) {
                             sets = 10;
                             reps = 2;
                         }
@@ -153,7 +165,7 @@ router.get("/", function(req, res, next) {
                         if (workout.macrocycle == 3) {
                             percentage = 0.85;
                         }
-                        workout.weight = Math.round((result[0].weight_lifted * percentage) / 5 ) * 5;
+                        workout.weight = Math.round((result[0].weight_lifted * percentage) / 5) * 5;
                     }
                     workout.mainSets = sets;
                     workout.mainReps = reps;
@@ -170,11 +182,10 @@ router.get("/", function(req, res, next) {
                         workout.accesoryLifts.push(row.accessory_lift);
                         var sets = "";
                         var reps = "";
-                        if (workout.day == 1 || workout.day == 2)  {
+                        if (workout.day == 1 || workout.day == 2) {
                             sets = "4-5";
                             reps = "10-12";
-                        }
-                        else {
+                        } else {
                             sets = "3-4";
                             reps = "8-10";
                         }
@@ -185,7 +196,7 @@ router.get("/", function(req, res, next) {
                     res.send(workout);
                 });
 
-    });
+        });
 
     //if it is day one...
     /*if (workout.day == 1) {
@@ -262,191 +273,191 @@ router.post("/complete-workout", function(req, res, next) {
         macrocycleDayQuery,
         function(err, result, fields) {
             if (err) throw err;
-            
+
             console.log(result);
 
             //if day is 1... 
-            
+
             //...write new record to records_upper...
-            if(result[0].day == 1){
-                var insertRecordsUpperQuery = 
-                    "INSERT INTO records_upper(weight_lifted)" + 
+            if (result[0].day == 1) {
+                var insertRecordsUpperQuery =
+                    "INSERT INTO records_upper(weight_lifted)" +
                     "VALUES      (" + req.body.maxLift + ");";
                 con.query(
                     insertRecordsUpperQuery,
                     function(err, result, fields) {
                         if (err) throw err;
-                    console.log(result.insertId);
-                    var recordsUpperId = result.insertId;
+                        console.log(result.insertId);
+                        var recordsUpperId = result.insertId;
 
-                    //get the main lift id 
-                    var mainLiftIdQuery = 
-                    "SELECT     mlu.main_lifts_upper_id " +
-                    "FROM       max_effort_upper meu " +
-                    "INNER JOIN max_effort_upper_has_main_lifts_upper jt1 " +
-                    "ON         meu.max_effort_upper_id = jt1.max_effort_upper_id " +
-                    "INNER JOIN main_lifts_upper mlu " +
-                    "ON         jt1.main_lifts_upper_id = mlu.main_lifts_upper_id;";
+                        //get the main lift id 
+                        var mainLiftIdQuery =
+                            "SELECT     mlu.main_lifts_upper_id " +
+                            "FROM       max_effort_upper meu " +
+                            "INNER JOIN max_effort_upper_has_main_lifts_upper jt1 " +
+                            "ON         meu.max_effort_upper_id = jt1.max_effort_upper_id " +
+                            "INNER JOIN main_lifts_upper mlu " +
+                            "ON         jt1.main_lifts_upper_id = mlu.main_lifts_upper_id;";
 
-                    con.query(
-                        mainLiftIdQuery,
-                        function(err, result, fields) {
-                            if (err) throw err;
-                            console.log(result[0].main_lifts_upper_id);
-                            var mainLiftId = result[0].main_lifts_upper_id;
+                        con.query(
+                            mainLiftIdQuery,
+                            function(err, result, fields) {
+                                if (err) throw err;
+                                console.log(result[0].main_lifts_upper_id);
+                                var mainLiftId = result[0].main_lifts_upper_id;
 
-                            //...insert to records_upper_has_main_lifts_upper...
-                            var insertRecordsUpperHasMainLiftsUpper = 
-                            "INSERT INTO records_upper_has_main_lifts_upper(records_upper_id, main_lifts_upper_id) " + 
-                            "VALUES      (" + recordsUpperId + ", " + mainLiftId + ");";
+                                //...insert to records_upper_has_main_lifts_upper...
+                                var insertRecordsUpperHasMainLiftsUpper =
+                                    "INSERT INTO records_upper_has_main_lifts_upper(records_upper_id, main_lifts_upper_id) " +
+                                    "VALUES      (" + recordsUpperId + ", " + mainLiftId + ");";
 
-                            con.query(
-                                insertRecordsUpperHasMainLiftsUpper,
-                                function(err, result, fields) {
-                                    if (err) throw err;
-                                    
-                                    //...insert to users_has_records_upper...
-                                    var insertUsersHasRecordsUpper = 
-                                    "INSERT INTO users_has_records_upper(user_id, records_upper_id) " +
-                                    "VALUES      (1," +  recordsUpperId + ");";
-                                    //get user_id
-                                    /*just using 1 for now*/
-                                    con.query(
-                                        insertUsersHasRecordsUpper,
-                                        function(err, result, fields) {
-                                            if (err) throw err;
-                                        });
-                                });
-                            
-                            //get dynamic_effort_upper_id
-                            var getWorkoutId = 
-                            "SELECT     deu.dynamic_effort_upper_id " +
-                            "FROM       dynamic_effort_upper deu " +
-                            
-                            "INNER JOIN macrocycle mc " +
-                            "ON         mc.dynamic_effort_upper_id = deu.dynamic_effort_upper_id " +
-                            "INNER JOIN user u " +
-                            "ON         u.macrocycle_id = mc.macrocycle_id " +
-                            "WHERE u.user_id='1';"; 
+                                con.query(
+                                    insertRecordsUpperHasMainLiftsUpper,
+                                    function(err, result, fields) {
+                                        if (err) throw err;
 
-                            con.query(
-                                getWorkoutId,
-                                function(err, result, fields) {
-                                    if (err) throw err;
-                                    console.log(result);
-                                    var dynamicEffortId = result[0].dynamic_effort_upper_id;
+                                        //...insert to users_has_records_upper...
+                                        var insertUsersHasRecordsUpper =
+                                            "INSERT INTO users_has_records_upper(user_id, records_upper_id) " +
+                                            "VALUES      (1," + recordsUpperId + ");";
+                                        //get user_id
+                                        /*just using 1 for now*/
+                                        con.query(
+                                            insertUsersHasRecordsUpper,
+                                            function(err, result, fields) {
+                                                if (err) throw err;
+                                            });
+                                    });
 
-                                    //Update the record id in this macrocycle's dynamic_effort_upper workout
-                                    var insertRecordId = 
-                                    "UPDATE dynamic_effort_upper deu " +
-                                    "SET    records_upper_id='" + recordsUpperId + "' " +
-                                    "WHERE deu.dynamic_effort_upper_id = '" +dynamicEffortId + "';";
-                                    con.query(
-                                        insertRecordId,
-                                        function(err, result, fields) {
-                                            if (err) throw err;
-                                        });
-                                });
-                        });
-                    
-                });
+                                //get dynamic_effort_upper_id
+                                var getWorkoutId =
+                                    "SELECT     deu.dynamic_effort_upper_id " +
+                                    "FROM       dynamic_effort_upper deu " +
+
+                                    "INNER JOIN macrocycle mc " +
+                                    "ON         mc.dynamic_effort_upper_id = deu.dynamic_effort_upper_id " +
+                                    "INNER JOIN user u " +
+                                    "ON         u.macrocycle_id = mc.macrocycle_id " +
+                                    "WHERE u.user_id='1';";
+
+                                con.query(
+                                    getWorkoutId,
+                                    function(err, result, fields) {
+                                        if (err) throw err;
+                                        console.log(result);
+                                        var dynamicEffortId = result[0].dynamic_effort_upper_id;
+
+                                        //Update the record id in this macrocycle's dynamic_effort_upper workout
+                                        var insertRecordId =
+                                            "UPDATE dynamic_effort_upper deu " +
+                                            "SET    records_upper_id='" + recordsUpperId + "' " +
+                                            "WHERE deu.dynamic_effort_upper_id = '" + dynamicEffortId + "';";
+                                        con.query(
+                                            insertRecordId,
+                                            function(err, result, fields) {
+                                                if (err) throw err;
+                                            });
+                                    });
+                            });
+
+                    });
 
                 //increment day in macrocycle table
-                var updateDay = 
-                "UPDATE macrocycle mc " +
-                "SET    day=2 " +
-                "WHERE  mc.macrocycle_id=1;"; 
+                var updateDay =
+                    "UPDATE macrocycle mc " +
+                    "SET    day=2 " +
+                    "WHERE  mc.macrocycle_id=1;";
                 con.query(
                     updateDay,
                     function(err, result, fields) {
                         if (err) throw err;
-                    });   
+                    });
             }
 
             //if day is 2, write new record to records lower
             if (result[0].day == 2) {
-                var insertRecordsLowerQuery = 
-                    "INSERT INTO records_lower(weight_lifted)" + 
+                var insertRecordsLowerQuery =
+                    "INSERT INTO records_lower(weight_lifted)" +
                     "VALUES      (" + req.body.maxLift + ");";
                 con.query(
                     insertRecordsLowerQuery,
                     function(err, result, fields) {
                         if (err) throw err;
-                    console.log(result.insertId);
-                    var recordsLowerId = result.insertId;
+                        console.log(result.insertId);
+                        var recordsLowerId = result.insertId;
 
-                    //get the main lift id 
-                    var mainLiftIdQuery = 
-                    "SELECT     mll.main_lifts_lower_id " +
-                    "FROM       max_effort_lower mel " +
-                    
-                    "INNER JOIN max_effort_lower_has_main_lifts_lower jt1 " +
-                    "ON         mel.max_effort_lower_id = jt1.max_effort_lower_id " +
-                    "INNER JOIN main_lifts_lower mll " +
-                    "ON         jt1.main_lifts_lower_id = mll.main_lifts_lower_id;";
-                    con.query(
-                        mainLiftIdQuery,
-                        function(err, result, fields) {
-                            if (err) throw err;
-                            console.log(result[0].main_lifts_lower_id);
-                            var mainLiftId = result[0].main_lifts_lower_id;
+                        //get the main lift id 
+                        var mainLiftIdQuery =
+                            "SELECT     mll.main_lifts_lower_id " +
+                            "FROM       max_effort_lower mel " +
 
-                            var insertRecordsLowerHasMainLiftsLower = 
-                            "INSERT INTO records_lower_has_main_lifts_lower(records_lower_id, main_lifts_lower_id) " + 
-                            "VALUES      (" + recordsLowerId + ", " + mainLiftId + ");";
+                            "INNER JOIN max_effort_lower_has_main_lifts_lower jt1 " +
+                            "ON         mel.max_effort_lower_id = jt1.max_effort_lower_id " +
+                            "INNER JOIN main_lifts_lower mll " +
+                            "ON         jt1.main_lifts_lower_id = mll.main_lifts_lower_id;";
+                        con.query(
+                            mainLiftIdQuery,
+                            function(err, result, fields) {
+                                if (err) throw err;
+                                console.log(result[0].main_lifts_lower_id);
+                                var mainLiftId = result[0].main_lifts_lower_id;
 
-                            con.query(
-                                insertRecordsLowerHasMainLiftsLower,
-                                function(err, result, fields) {
-                                    if (err) throw err;
-                                    //...insert to users_has_records_lower...
-                                    var insertUsersHasRecordsLower = 
-                                    "INSERT INTO users_has_records_lower(user_id, records_lower_id) " +
-                                    "VALUES      (1," +  recordsLowerId + ");";
-                                    //get user_id
-                                    /*just using 1 for now*/
-                                    con.query(
-                                        insertUsersHasRecordsLower,
-                                        function(err, result, fields) {
-                                            if (err) throw err;
-                                        });
-                                });
-                            //get dynamic_effort_lower_id
-                            var getWorkoutId = 
-                            "SELECT     del.dynamic_effort_lower_id " +
-                            "FROM       dynamic_effort_lower del " +
-                            
-                            "INNER JOIN macrocycle mc " +
-                            "ON         mc.dynamic_effort_lower_id = del.dynamic_effort_lower_id " +
-                            "INNER JOIN user u " +
-                            "ON         u.macrocycle_id = mc.macrocycle_id " +
-                            "WHERE u.user_id='1';"; 
+                                var insertRecordsLowerHasMainLiftsLower =
+                                    "INSERT INTO records_lower_has_main_lifts_lower(records_lower_id, main_lifts_lower_id) " +
+                                    "VALUES      (" + recordsLowerId + ", " + mainLiftId + ");";
 
-                            con.query(
-                                getWorkoutId,
-                                function(err, result, fields) {
-                                    if (err) throw err;
-                                    console.log(result);
-                                    var dynamicEffortId = result[0].dynamic_effort_lower_id;
+                                con.query(
+                                    insertRecordsLowerHasMainLiftsLower,
+                                    function(err, result, fields) {
+                                        if (err) throw err;
+                                        //...insert to users_has_records_lower...
+                                        var insertUsersHasRecordsLower =
+                                            "INSERT INTO users_has_records_lower(user_id, records_lower_id) " +
+                                            "VALUES      (1," + recordsLowerId + ");";
+                                        //get user_id
+                                        /*just using 1 for now*/
+                                        con.query(
+                                            insertUsersHasRecordsLower,
+                                            function(err, result, fields) {
+                                                if (err) throw err;
+                                            });
+                                    });
+                                //get dynamic_effort_lower_id
+                                var getWorkoutId =
+                                    "SELECT     del.dynamic_effort_lower_id " +
+                                    "FROM       dynamic_effort_lower del " +
 
-                                    //Update the record id in this macrocycle's dynamic_effort_upper workout
-                                    var insertRecordId = 
-                                    "UPDATE dynamic_effort_lower del " +
-                                    "SET    records_lower_id='" + recordsLowerId + "' " +
-                                    "WHERE del.dynamic_effort_lower_id = '" +dynamicEffortId + "';";
-                                    con.query(
-                                        insertRecordId,
-                                        function(err, result, fields) {
-                                            if (err) throw err;
-                                        });
-                                });
+                                    "INNER JOIN macrocycle mc " +
+                                    "ON         mc.dynamic_effort_lower_id = del.dynamic_effort_lower_id " +
+                                    "INNER JOIN user u " +
+                                    "ON         u.macrocycle_id = mc.macrocycle_id " +
+                                    "WHERE u.user_id='1';";
+
+                                con.query(
+                                    getWorkoutId,
+                                    function(err, result, fields) {
+                                        if (err) throw err;
+                                        console.log(result);
+                                        var dynamicEffortId = result[0].dynamic_effort_lower_id;
+
+                                        //Update the record id in this macrocycle's dynamic_effort_upper workout
+                                        var insertRecordId =
+                                            "UPDATE dynamic_effort_lower del " +
+                                            "SET    records_lower_id='" + recordsLowerId + "' " +
+                                            "WHERE del.dynamic_effort_lower_id = '" + dynamicEffortId + "';";
+                                        con.query(
+                                            insertRecordId,
+                                            function(err, result, fields) {
+                                                if (err) throw err;
+                                            });
+                                    });
                             });
-                        });
+                    });
                 //increment day to 3
-                var updateDay = 
-                "UPDATE macrocycle mc " +
-                "SET    day=3 " +
-                "WHERE  mc.macrocycle_id=1;"; 
+                var updateDay =
+                    "UPDATE macrocycle mc " +
+                    "SET    day=3 " +
+                    "WHERE  mc.macrocycle_id=1;";
                 con.query(
                     updateDay,
                     function(err, result, fields) {
@@ -456,22 +467,143 @@ router.post("/complete-workout", function(req, res, next) {
             //if day is 3, increment day by one
             if (result[0].day == 3) {
                 //increment day to 4
-                var updateDay = 
-                "UPDATE macrocycle mc " +
-                "SET    day=4 " +
-                "WHERE  mc.macrocycle_id=1;"; 
+                var updateDay =
+                    "UPDATE macrocycle mc " +
+                    "SET    day=4 " +
+                    "WHERE  mc.macrocycle_id=1;";
                 con.query(
                     updateDay,
                     function(err, result, fields) {
                         if (err) throw err;
-                    }); 
+                    });
             }
-            //if day is 4, increment macrocycle by 1
+            //if day is 4
             if (result[0].day == 4) {
-             //set day to to 1
-                //delete all workouts
+                //update all workouts
+                var updateMaxEffortUpperMain =
+                    "UPDATE max_effort_upper_has_main_lifts_upper " +
+                    "SET    main_lifts_upper_id=FLOOR(RAND()*(8-1+1))+1  " +
+                    "WHERE  max_effort_upper_id=(" +
+                    "SELECT     max_effort_upper_id " +
+                    "FROM       macrocycle m " +
+                    "INNER JOIN user u " +
+                    "ON         u.macrocycle_id = m.macrocycle_id " +
+                    "WHERE      u.user_id='1'" +
+                    ");";
+
+                var updateMaxEffortUpperAccessory =
+                    "UPDATE max_effort_upper_has_accesory_lifts_upper " +
+                    "SET    accesory_lifts_upper_id=FLOOR(RAND()*(12-1+1))+1 " +
+                    "WHERE  max_effort_upper_id=( " +
+                    "SELECT     max_effort_upper_id " +
+                    "FROM       macrocycle m " +
+                    "INNER JOIN user u " +
+                    "ON         u.macrocycle_id = m.macrocycle_id " +
+                    "WHERE      u.user_id='1' " +
+                    ");";
+
+                var updateMaxEffortLowerMain =
+                    "UPDATE max_effort_lower_has_main_lifts_lower " +
+                    "SET    main_lifts_lower_id=FLOOR(RAND()*(8-1+1))+1 " +
+                    "WHERE  max_effort_lower_id=( " +
+                    "SELECT     max_effort_lower_id " +
+                    "FROM       macrocycle m " +
+                    "INNER JOIN user u " +
+                    "ON         u.macrocycle_id = m.macrocycle_id " +
+                    "WHERE      u.user_id='1' " +
+                    ");";
+
+                var updateMaxEffortLowerAccessory =
+                    "UPDATE max_effort_lower_has_accesory_lifts_lower " +
+                    "SET    accesory_lifts_lower_id=FLOOR(RAND()*(12-1+1))+1    " +
+                    "WHERE  max_effort_lower_id=( " +
+                    "SELECT     max_effort_lower_id " +
+                    "FROM       macrocycle m " +
+                    "INNER JOIN user u " +
+                    "ON         u.macrocycle_id = m.macrocycle_id " +
+                    "WHERE      u.user_id='1' " +
+                    ");";
+
+                var updateDynamicEffortUpperAcessory =
+                    "UPDATE dynamic_effort_upper_has_accesory_lifts_upper " +
+                    "SET    accesory_lifts_upper_id=FLOOR(RAND()*(12-1+1))+1    " +
+                    "WHERE  dynamic_effort_upper_id=( " +
+                    "SELECT     dynamic_effort_upper_id " +
+                    "FROM       macrocycle m " +
+                    "INNER JOIN user u " +
+                    "ON         u.macrocycle_id = m.macrocycle_id " +
+                    "WHERE      u.user_id='1' " +
+                    ");";
+
+                var updateDynamicEffortLowerAccessory =
+                    "UPDATE dynamic_effort_lower_has_accesory_lifts_lower " +
+                    "SET    accesory_lifts_lower_id=FLOOR(RAND()*(12-1+1))+1    " +
+                    "WHERE  dynamic_effort_lower_id=( " +
+                    "SELECT     dynamic_effort_lower_id " +
+                    "FROM       macrocycle m " +
+                    "INNER JOIN user u " +
+                    "ON         u.macrocycle_id = m.macrocycle_id " +
+                    "WHERE      u.user_id='1' " +
+                    ");";
+
+                con.query(
+                    updateMaxEffortUpperMain,
+                    function(err, result, fields) {
+                        if (err) throw err;
+                    });
+                con.query(
+                    updateMaxEffortUpperAccessory,
+                    function(err, result, fields) {
+                        if (err) throw err;
+                    });
+                con.query(
+                    updateMaxEffortLowerMain,
+                    function(err, result, fields) {
+                        if (err) throw err;
+                    });
+                con.query(
+                    updateMaxEffortLowerAccessory,
+                    function(err, result, fields) {
+                        if (err) throw err;
+                    });
+                con.query(
+                    updateDynamicEffortUpperAcessory,
+                    function(err, result, fields) {
+                        if (err) throw err;
+                    });
+                con.query(
+                    updateDynamicEffortLowerAccessory,
+                    function(err, result, fields) {
+                        if (err) throw err;
+                    });
+                //set day to to 1
+                var updateDay =
+                    "UPDATE macrocycle mc " +
+                    "SET    day=1 " +
+                    "WHERE  mc.macrocycle_id=1;";
+                con.query(
+                    updateDay,
+                    function(err, result, fields) {
+                        if (err) throw err;
+                    });
                 //if macrocycle is at 3, set macrocycle to 1
-                //create all new workouts   
+                var macrocycle = 0;
+                if (result[0].macrocycle == 3) {
+                    macrocycle = 1;
+                }
+                //else, increment macrocycle by 1
+                else {
+                    macrocycle = result[0].macrocycle + 1;
+                }
+                var updateMacrocycle =
+                    "UPDATE macrocycle mc " +
+                    "SET    macrocycle=" + macrocycle + " " +
+                    "WHERE  mc.macrocycle_id=1;";
+                con.query(
+                    updateMacrocycle,
+                    function(err, result, fields) {
+                        if (err) throw err;
+                    });
             }
         });
 });
